@@ -10,40 +10,42 @@
   import appHeader from './components/appHeader.vue';
   import appMain from './components/appMain.vue';
 
-export default {
-  name: 'App',
-  components: {
-    appHeader,
-    appMain,
-  },
-  data() {
-    return {
-      reqState:'loading',
-      movieArray: [],
-      srcQuery: '',
-    }
-  },
-
-  methods: {
-    getSrcQuery (query) {
-      this.srcQuery = query.toLowerCase().trim();
-      this.callApi(); 
+  export default {
+    name: 'App',
+    components: {
+      appHeader,
+      appMain,
     },
-    async callApi() {
-      try {
-        const response = await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=6e89c6f4314800d5fba95fd05fdabb24&query=${this.srcQuery}&language=it-IT`);
-        this.movieArray = response.data.results;
-        this.reqState = 'loading';
-      } catch (error) {
-        this.reqState = 'error';
-        console.log('Request State Feed:' + ' ' + this.reqState);
+
+    data() {
+      return {
+        reqState:'loading',
+        movieArray: [],
+        srcQuery: '',
       }
-      console.table('Array Film:' + ' ' + this.movieArray);
-      this.reqState = 'loading complete';
-      console.log('Request State:' + ' ' + this.reqState);
+    },
+
+    methods: {
+      getSrcQuery (query) {
+        this.srcQuery = query.toLowerCase().trim();
+        this.callApi(); 
+      },
+      
+      async callApi() {
+        try {
+          const response = await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=6e89c6f4314800d5fba95fd05fdabb24&query=${this.srcQuery}&language=it-IT`);
+          this.movieArray = response.data.results;
+          this.reqState = 'loading';
+        } catch (error) {
+          this.reqState = 'error';
+          console.log('Request State Feed:' + ' ' + this.reqState);
+        }
+        console.table('Array Film:' + ' ' + this.movieArray);
+        this.reqState = 'loading complete';
+        console.log('Request State:' + ' ' + this.reqState);
+      }
     }
   }
-}
 
 </script>
 
