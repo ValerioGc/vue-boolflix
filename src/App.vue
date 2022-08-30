@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <appHeader @getSearchQuery.prevent="" />
+    <appHeader @getSearchQuery="getSrcQuery" />
     <appMain :foundFilm="movieArray" />
   </div>
 </template>
@@ -20,14 +20,18 @@ export default {
     return {
       reqState:'loading',
       movieArray: [],
+      srcQuery: '',
     }
   },
-  created() { this.callApi()},
 
   methods: {
+    getSrcQuery (query) {
+      this.srcQuery = query.toLowerCase().trim();
+      this.callApi(); 
+    },
     async callApi() {
       try {
-        const response = await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=6e89c6f4314800d5fba95fd05fdabb24&query=2001&lang=it-IT`);
+        const response = await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=6e89c6f4314800d5fba95fd05fdabb24&query=${this.srcQuery}&language=it-IT`);
         this.movieArray = response.data.results;
         this.reqState = 'loading';
       } catch (error) {

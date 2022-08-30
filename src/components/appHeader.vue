@@ -2,9 +2,10 @@
     <header>
         <nav>
             <h1>Boolflix</h1>
-            <span> 
-                <input v-model="userInput" type="text" id="searchBar" placeholder="Cerca Film">
-                <button id="searchButton">Cerca</button>
+            <span>
+                <input @keydown.enter="$emit('getSearchQuery', userInput)" v-model="userInput" type="text"
+                    id="searchBar" placeholder="Cerca Film">
+                <button @click="$emit('getSearchQuery', userInput)" id="searchButton">Cerca</button>
             </span>
         </nav>
     </header>
@@ -14,9 +15,6 @@
 
     export default {
         name:'appHeader',
-        props: {
-            responseArray: Array,
-        },
         data() {
             return {
                 userInput: '',

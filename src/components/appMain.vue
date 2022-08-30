@@ -15,11 +15,6 @@
         name:'appMain',
         props: {
             foundFilm: Array,
-        },
-        data() {
-            return {
-
-            }
         }
     }
     
