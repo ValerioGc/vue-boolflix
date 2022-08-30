@@ -14,6 +14,9 @@
 
     export default {
         name:'appHeader',
+        props: {
+            responseArray: Array,
+        },
         data() {
             return {
                 userInput: '',
