@@ -10,7 +10,7 @@
                     <!-- <img class="poster" :src="imgPath + response.poster_path" :alt="`copertina ${response.title} `"> -->
                     <p>Titolo: {{ response.title }}</p>
                     <p>Titolo Originale: {{ response.original_title }}</p>
-                    <img class="flagL" :src="sourceFlag + langFlag" :alt="`${response.original_language} Flag`">
+                    <img class="flagL" :src="sourceFlag + selectFlag(index)" :alt="`${response.original_language} Flag`">
                     <div class="rating">
                         <span>Voto: {{ response.vote_average }}</span>
                         <i v-for="starF in starFull" :key="starF" class="fa-solid fa-star"></i>
@@ -67,24 +67,21 @@
 
             }
         },
-        created() {
-            this.selectFlag();
-        },
         methods: {
-            selectFlag () {
-                for (let i = 0; i < this.foundFilm.length; i++) {
-                    if (this.foundFilm[i].original_language == 'en') {
-                        this.langFlag = '/a/ae/Flag_of_the_United_Kingdom.svg';
-                    } else if (this.foundFilm[i].original_language == 'it') {
-                        this.langFlag = '/c/ca/Bandiera_italiana_foto.svg';
-                    } else if (this.foundFilm[i].original_language == 'es') {
-                        this.langFlag = '/9/9a/Flag_of_Spain.svg';
-                    } else if (this.foundFilm[i].original_language == 'fr') {
-                        this.langFlag = '/c/c3/Flag_of_France.svg';
-                    } else if (this.foundFilm[i].original_language == 'de') {
-                        this.langFlag = '/b/ba/Flag_of_Germany.svg';
-                    }
+            selectFlag (index) {
+                let flag = this.langFlag;
+                if (this.foundFilm[index].original_language == 'en') {
+                    flag = '/a/ae/Flag_of_the_United_Kingdom.svg';
+                } else if (this.foundFilm[index].original_language == 'it') {
+                    flag = '/c/ca/Bandiera_italiana_foto.svg';
+                } else if (this.foundFilm[index].original_language == 'es') {
+                    flag = '/9/9a/Flag_of_Spain.svg';
+                } else if (this.foundFilm[index].original_language == 'fr') {
+                    flag = '/c/c3/Flag_of_France.svg';
+                } else if (this.foundFilm[index].original_language == 'de') {
+                    flag = '/b/ba/Flag_of_Germany.svg';
                 }
+                return flag;
             },
         // Conversione punteggio
             calcStar() {
@@ -148,10 +145,14 @@
                 box-shadow: 0px 0px 5px -1px $primary_color;
                 border-radius: 5px;
                 overflow-y: auto;
+                padding: 1.5rem;
 
                 .poster {
-                    width: 100%;
-                    height: 100%;
+                    position: absolute;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
                 }
                 p {
                     padding: 0.5rem 0;
