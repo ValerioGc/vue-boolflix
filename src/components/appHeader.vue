@@ -26,13 +26,14 @@
 
 <style lang="scss">
 
-
-    @import url('@/styles/vars.scss');
-    @import url('@/styles/general.scss');
+    @import '../styles/vars.scss';
+    @import '../styles/general.scss';
 
         header {
+            height: 5rem;
             padding: 30px 0;
-            // background-color: $secondary_color;
+            background-color: $primary_color;
+            box-shadow: 0px 0px 10px -3px $light_color;
 
             nav {
                 width: 80%;
@@ -42,9 +43,8 @@
                 align-items: center;
 
                 h1 {
-                    color: brand_color;
-                    text-transform: uppercase;
-                    font-weight: bold;
+                    color: $brand_color;
+                    text-shadow: 2px 2px 3px $secondary_color;
                 }
             }
         }
