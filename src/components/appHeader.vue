@@ -3,7 +3,7 @@
         <nav>
             <h1>Boolflix</h1>
             <span>
-                <input @keydown.enter="$emit('getSearchQuery', userInput)" v-model="userInput" type="text"
+                <input @change="$emit('getSearchQuery', userInput)" v-model="userInput" type="text"
                     id="searchBar" placeholder="Cerca Film">
                 <button @click="$emit('getSearchQuery', userInput)" id="searchButton">Cerca</button>
             </span>

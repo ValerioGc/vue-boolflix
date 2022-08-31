@@ -46,6 +46,8 @@
           const responseTvSeries = await axios.get(this.apiLink + '/search/tv?api_key=' + this.apiKey + '&query=' +this.srcQuery + '&language=' + this.apiLang);
         // Array Risultati
           this.movieArray = responseMovie.data.results;
+          console.table('moviearr:' + ' ' + this.movieArray)
+
           this.tvSeriesArray = responseTvSeries.data.results;
         // Stato Richiesta
           this.reqState = 'loading';
@@ -56,8 +58,8 @@
           console.log('Request State Feed:' + ' ' + this.reqState);
         }
       },
+      
       checkStatus() {
-          // console.table('MovieArr:' + ' ' + this.movieArray);
         if (this.movieArray.length > 0 ) {
           this.reqState = 'loading complete';
           console.log('Request State:' + ' ' + this.reqState);

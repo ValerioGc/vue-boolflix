@@ -4,7 +4,7 @@
             Usa la barra di ricerca per visualizzare i risultati
         </h2>
         <div>
-            <h2 @click="this.selectFla3g()" v-if="this.foundSeries.length > 0">Film:</h2>
+            <h2 v-if="this.foundSeries.length > 0">Film:</h2>
             <ul id="movie-card-container">
                 <li class="card" v-for="(response, index) in foundFilm" :key="index">
                     <!-- <img class="poster" :src="imgPath + response.poster_path" :alt="`copertina ${response.title} `"> -->
@@ -13,8 +13,8 @@
                     <img class="flagL" :src="sourceFlag + langFlag" :alt="`${response.original_language} Flag`">
                     <div class="rating">
                         <span>Voto: {{ response.vote_average }}</span>
-                        <i v-for="(index2) in starFull" :key="index2 + index" class="fa-solid fa-star"></i>
-                        <i v-for="(index3) in starEmpty" :key="index3" class="fa-regular fa-star"></i>
+                        <i v-for="starF in starFull" :key="starF" class="fa-solid fa-star"></i>
+                        <i v-for="starE in starEmpty" :key="starE" class="fa-regular fa-star"></i>
                     </div>
                     <p class="resume">{{ response.overview }}</p>
                 </li>
@@ -23,21 +23,21 @@
         <div>
             <h2 v-if="this.foundSeries.length > 0">Serie TV:</h2>
             <ul id="tv-card-container">
-                <li class="card" v-for="(response, index) in foundSeries" :key="index">
+                <li class="card" v-for="(responseTv, index2) in foundSeries" :key="index2 + '3'">
                     <!-- <img class="poster" :src="imgPath + response.poster_path" :alt="`copertina ${response.name} `"> -->
-                    <p>Titolo: {{ response.name }}</p>
-                    <p>Titolo Originale: {{ response.original_name }}</p>
-                    <img class="flagL" :src="sourceFlag + langFlag" :alt="response.original_language + 'Flag' ">
+                    <p>Titolo: {{ responseTv.name }}</p>
+                    <p>Titolo Originale: {{ responseTv.original_name }}</p>
+                    <img class="flagL" :src="sourceFlag + langFlag" :alt="responseTv.original_language + 'Flag' ">
                     <span v-if="langFlag == '/0/03/Flag_Blank.svg'">
-                        {{response.original_language}}
+                        {{responseTv.original_language}}
                     </span>
-                    <!-- <p>Voto: {{ response.vote_average }}</p> -->
+                    <!-- <p>Voto: {{ responseTv.vote_average }}</p> -->
                     <div class="rating">
-                        <span>Voto: {{ response.vote_average }}</span>
-                        <i v-for="(index2) in starFull" :key="index2 + index" class="fa-solid fa-star"></i>
-                        <i v-for="(index3) in starEmpty" :key="index3" class="fa-regular fa-star"></i>
+                        <span>Voto: {{ responseTv.vote_average }}</span>
+                        <i v-for="TvstarF in starFull" :key="TvstarF" class="fa-solid fa-star"></i>
+                        <i v-for="TvStarE in starEmpty" :key="TvStarE" class="fa-regular fa-star"></i>
                     </div>
-                    <p class="resume">{{ response.overview }}</p>
+                    <p class="resume">{{ responseTv.overview }}</p>
                 </li>
             </ul>
         </div>
@@ -59,7 +59,7 @@
                 sourceFlag: 'https://upload.wikimedia.org/wikipedia/commons',
                 imgPath:'https://image.tmdb.org/t/p/w342',
             // Conversione e calcolo punteggio
-                actualRating: '',
+                actualRating: '5',
                 convertedRating: '0',
                 
                 starFull: 3,
@@ -67,13 +67,13 @@
 
             }
         },
-        mounted() {
-            this.calcStar();
+        created() {
+            this.selectFlag();
         },
         methods: {
             selectFlag () {
                 for (let i = 0; i < this.foundFilm.length; i++) {
-                    if (this.foundFilm.original_language[i] == 'en') {
+                    if (this.foundFilm[i].original_language == 'en') {
                         this.langFlag = '/a/ae/Flag_of_the_United_Kingdom.svg';
                     } else if (this.foundFilm[i].original_language == 'it') {
                         this.langFlag = '/c/ca/Bandiera_italiana_foto.svg';
@@ -88,7 +88,8 @@
             },
         // Conversione punteggio
             calcStar() {
-                let vote = parseInt(Math.ceil(this.actualRating) / 2);
+                this.actualRating = this.foundFilm.vote_average;
+                let vote = Math.ceil(this.actualRating / 2);
                 this.convertedRating = vote;
             }
         // Assegnazione variabile
