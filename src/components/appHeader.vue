@@ -3,9 +3,11 @@
         <nav>
             <h1>Boolflix</h1>
             <span>
-                <input @change="$emit('getSearchQuery', userInput)" @keydown.enter=" $emit('getSearchQuery',
-                    userInput)" v-model="userInput" type="text" id="searchBar" placeholder="Cerca Film">
-                <!-- <button @click="$emit('getSearchQuery', userInput)" id="searchButton">Cerca</button> -->
+                <input @change="$emit('getSearchQuery', userInput)" @keydown.enter=" $emit('getSearchQuery', userInput)" 
+                    v-model="userInput" type="text" id="searchBar" placeholder="Cerca Film">
+                    <!-- <select name="genre" id="genre">
+                        <option v-for="(genre, index) in genreList" :key="index" value="?">{{genre.genre}}</option>
+                    </select> -->
             </span>
         </nav>
     </header>
