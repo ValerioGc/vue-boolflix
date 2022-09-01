@@ -6,16 +6,6 @@
     padding: 0;
 }
 
-html {
-    font-family: 'Bebas Neue', sans-serif;
-}
-
-h1,
-h2 {
-    text-transform: uppercase;
-    font-family: 'Bebas Neue', sans-serif;
-}
-
 // Scrollbar
 ::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px #0000004d;
@@ -30,9 +20,23 @@ h2 {
 
 ::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    box-shadow: inset 0 0 5px 1px #000000;
+    box-shadow: inset 0 0 5px 1px $primary_color;
     background-color: $brand_color;
 }
+
+// Corpo pagina
+
+html {
+    font-family: 'Bebas Neue', sans-serif;
+}
+
+h1,
+h2 {
+    text-transform: uppercase;
+    font-family: 'Bebas Neue', sans-serif;
+}
+
+
 
 .hidden {
     display: none;
