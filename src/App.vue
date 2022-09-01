@@ -1,11 +1,7 @@
 <template>
   <div id="app">
     <appHeader @getSearchQuery="getSrcQuery" />
-    <appMain v-if="reqState !== 'error'" :foundFilm="movieArray" :foundSeries="tvSeriesArray" :sState="searchState"
-      :sStateTv="searchStateTv" />
-    <div v-if="reqState == 'error'" class="errorD">
-      <h2>Errore! Nessuna risposta dal server</h2>
-    </div>
+    <appMain :foundFilm="movieArray" :foundSeries="tvSeriesArray" :sState="searchState" />
   </div>
 </template>
 
@@ -34,9 +30,8 @@
       // Stato richiesta
         apiLang:'it-IT',
         reqState: 'loading',
-
+      // Stato ricerca
         searchState: 'empty',
-        searchStateTv: 'empty',
       }
     },
 
@@ -51,6 +46,7 @@
         // Chiamata API
           const responseMovie = await axios.get(this.apiLink + '/search/movie?api_key=' + this.apiKey + '&query=' +this.srcQuery + '&language=' + this.apiLang);
           const responseTvSeries = await axios.get(this.apiLink + '/search/tv?api_key=' + this.apiKey + '&query=' +this.srcQuery + '&language=' + this.apiLang);
+        
         // Array Risultati
           this.movieArray = responseMovie.data.results;
           this.tvSeriesArray = responseTvSeries.data.results;
@@ -61,18 +57,14 @@
           } else {
             this.searchState = 'searching' ;
           }
-        // Controllo Risultati Serie TV
-          if (this.tvSeriesArray.length == 0) {
-            this.searchStateTv = 'notFound' ;
-          } else {
-            this.searchStateTv = 'searching';
-          }
-        // Stato Richiesta
+
+        // Controllo Stato Richiesta
           this.reqState = 'loading';
           console.log('Request State:' + ' ' + this.reqState);
           this.checkStatus();
         } catch (error) {
           this.reqState = 'error';
+          this.searchState = 'error';
           this.noResp = true;
           console.log('Request State Feed:' + ' ' + this.reqState);
         }
@@ -95,22 +87,7 @@
   @import './styles/general.scss';
 
   #app {
-        background-color: $primary_color;
-    .errorD {
-      height: 100vh;
-      background-color: $secondary_color;
-      color: $light_color;
-      text-align: center;
-      padding: 15rem 0;
-      
-      h2 {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 36px;
-      }
-    }
+    background-color: $primary_color;
   }
 
 </style>

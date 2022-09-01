@@ -1,90 +1,136 @@
 <template>
     <main>
         <div>
+            <!-- Schermata iniziale -->
             <h2 v-if="sState == 'empty'" class="placeHl">
                 Usa la barra di ricerca per visualizzare i risultati
             </h2>
             <h2 v-if="sState == 'notFound'" class="placeHl">
                 Nessun Risultato
             </h2>
+            <h2 v-if="sState == 'error'" class="placeHl">
+                Errore! Nessuna risposta dal server
+            </h2>
+            <!-- Titolo sezione -->
             <h2 v-if="foundSeries.length > 0">Film:</h2>
+            <!-- Card container -->
             <ul id="movie-card-container">
-                <li class="card bgMove slit-in" v-for="(response, index) in foundFilm" :key="index">
-                    <!-- <img class="poster" :src="imgPath + response.poster_path" :alt="`copertina ${response.title} `" />  -->
-                    <div class="info">
-                        <!-- Titolo -->
-                        <div>
-                            <p>
-                                <span class="inf">Titolo:</span> {{ response.title }}
-                            </p>
-                            <p>
-                                <span class="inf">Titolo Originale:</span> {{ response.original_title }}
-                            </p>
+                <li class="card-cont" v-for="(response, index) in foundFilm" :key="index">
+                    <span class="card bgMove slit-in">
+                        <!-- Copertina  Card -->
+                        <div class="front-card">
+                            <div v-if="response.poster_path == null" class="notFoundInfo">
+                                <h3>Copertina non trovata</h3>
+                                <img :src="sourceFlag + '/9/95/No_immagine_disponibile.svg'" alt="">
+                            </div>
+                            <img v-else class="poster card-front" :src="imgPath + response.poster_path"
+                                :alt="`copertina ${response.title} `" />
                         </div>
-                        <!-- Bandiera Lingua -->
-                        <div>
-                            <span class="inf lang">Lingua Originale:</span>
-                            <img class="flagL" :src="sourceFlag + selectFlag(index)"
-                                :alt="`${response.original_language} Flag`" />
-                            <span v-if="langFlag == '/0/03/Flag_Blank.svg'">
-                                {{responseTv.original_language}}
-                            </span>
+                        <!-- Retro card -->
+                        <div class="info fip-in hidden">
+                            <!-- Titolo Film -->
+                            <div>
+                                <p>
+                                    <span class="inf">Titolo:</span> {{ response.title }}
+                                </p>
+                                <p>
+                                    <span class="inf">Titolo Originale:</span> {{ response.original_title }}
+                                </p>
+                            </div>
+                            <!-- Bandiera Lingua Film  -->
+                            <div>
+                                <span class="inf lang">Lingua Originale:</span>
+                                <img class="flagL" :src="sourceFlag + selectFlag(index)"
+                                    :alt="`${response.original_language} Flag`" />
+                                <span v-if="langFlag == '/0/03/Flag_Blank.svg'">
+                                    {{response.original_language}}
+                                </span>
+                            </div>
+                            <!-- Voto Film -->
+                            <div class="rating">
+                                <span class="inf">Voto: </span>
+                                <span v-if="response.vote_average !== 0">
+                                    <i v-for="n in 5" class="fa-star" :key="n + 3"
+                                        style="--fa-animation-iteration-count: 2; --fa-animation-delay: 0.2s;"
+                                        :class="(n >= calcStar(response.vote_average)) ? 'fa-regular':'fa-solid'"></i>
+                                </span>
+                                <p v-else> Voto non disponibile </p>
+                            </div>
+                            <!-- Trama Film -->
+                            <div class="resume">
+                                <p v-if="response.overview !== ''">
+                                    <span class="inf">Trama:</span>
+                                    {{response.overview }}
+                                </p>
+                                <p v-else>
+                                    <span class="inf">Trama:</span> Trama non disponibile
+                                </p>
+                            </div>
                         </div>
-                        <!-- Voto Serie TV -->
-                        <div class="rating">
-                            <span>Voto: {{ response.vote_average }}</span>
-                            <i style="--fa-animation-iteration-count: 1; --fa-animation-delay: 0.2s;"
-                                v-for="starF in starFull" :key=" 20 + starF" class="fa-solid fa-star fa-bounce"></i>
-                            <i style="--fa-animation-iteration-count: 1; --fa-animation-delay: 0.2s;"
-                                v-for="starE in starEmpty" :key="30 + starE" class="fa-regular fa-star fa-bounce"></i>
-                        </div>
-                        <!-- Trama -->
-                        <p class="resume">
-                            <span class="inf">Trama:</span>{{ response.overview }}
-                        </p>
-                    </div>
+                    </span>
                 </li>
             </ul>
         </div>
         <div>
+            <!-- Titolo sezione -->
             <h2 v-if="foundSeries.length > 0">Serie TV:</h2>
+            <!-- Card Container -->
             <ul id="tv-card-container">
-                <li class="card bgMove slit-in" v-for="(responseTv, index2) in foundSeries" :key="index2">
-                    <!-- <img class="poster" :src="imgPath + response.poster_path" :alt="`copertina ${response.name}`" /> -->
-                    <div class="info">
-                        <!-- Titolo -->
-                        <div>
-                            <p>
-                                <span class="inf">Titolo:</span> {{ responseTv.name }}
-                            </p>
-                            <p>
-                                <span class="inf">Titolo Originale:</span> {{ responseTv.original_name }}
-                            </p>
-                        </div>
-                        <!-- Bandiera Lingua -->
-                        <div>
-                            <span class="inf lang">Lingua Originale:</span>
-                            <img class="flagL" :src="sourceFlag + selectFlag(index2)"
-                                :alt="responseTv.original_language + 'Flag'" />
-                            <span v-if="langFlag == '/0/03/Flag_Blank.svg'">
-                                {{responseTv.original_language}}
-                            </span>
-                        </div>
-                        <!-- Voto Serie TV -->
-                        <div class="rating">
-                            <span class="inf">Voto: {{ responseTv.vote_average }} </span>
-                            <i style="--fa-animation-iteration-count: 1; --fa-animation-delay: 0.2s;"
-                                v-for="starF in starFull" :key=" 40 + starF" class="fa-solid fa-star fa-bounce"></i>
-                            <i style="--fa-animation-iteration-count: 1; --fa-animation-delay: 0.2s;"
-                                v-for="starE in starEmpty" :key="50 + starE" class="fa-regular fa-star fa-bounce"></i>
-                        </div>
-                        <!-- Trama -->
-                        <p class="resume">
-                            <span class="inf">Trama:</span>{{ responseTv.overview }}
+                <li class="card-cont" v-for="(responseTv, index2) in foundSeries" :key="index2">
+                    <span class="card bgMove slit-in">
+                        <!-- Copertina card -->
+
+                        <!-- <transition name:></transition> -->
+                        <img class="poster" :src="imgPath + responseTv.poster_path"
+                            :alt="`copertina ${responseTv.name}`" />
+
+                        <!-- Retro card -->
+                        <div class="info flip-in hidden">
+                            <!-- Titolo Serie Tv  -->
+                            <div>
+                                <span>
+                                    <span class="inf">Titolo:</span>
+                                    <p v-if="responseTv.name !== ''">{{ responseTv.name }}</p>
+                                    <p v-else>Titolo non trovato</p>
+                                </span>
+                    <span>
+                        <p>
+                            <span class="inf">Titolo Originale:</span> {{ responseTv.original_name }}
                         </p>
-                    </div>
-                </li>
-            </ul>
+                    </span>
+        </div>
+        <!-- Bandiera Lingua Serie Tv -->
+        <div>
+            <span class="inf lang">Lingua Originale:</span>
+            <img class="flagL" :src="sourceFlag + selectFlag(index2)" :alt="responseTv.original_language + 'Flag'" />
+            <span v-if="langFlag == '/0/03/Flag_Blank.svg'">
+                {{responseTv.original_language}}
+            </span>
+        </div>
+        <!-- Voto Serie TV -->
+        <div class="rating">
+            <span class="inf">Voto: </span>
+            <span v-if="responseTv.vote_average !== 0">
+                <i v-for="n in 5" class="fa-star" :key="n + 4"
+                    style="--fa-animation-iteration-count: 2; --fa-animation-delay: 0.2s;"
+                    :class="(n >= calcStar(responseTv.vote_average)) ? 'fa-regular':'fa-solid'"></i>
+            </span>
+            <p v-else> Voto non disponibile </p>
+        </div>
+        <!-- Trama Serie Tv-->
+        <div class="resume">
+            <p v-if="responseTv.overview !== ''">
+                <span class="inf">Trama:</span>
+                {{responseTv.overview }}
+            </p>
+            <p v-else>
+                <span class="inf">Trama:</span> Trama non disponibile
+            </p>
+        </div>
+        </div>
+        </span>
+        </li>
+        </ul>
         </div>
     </main>
 </template>
@@ -97,7 +143,6 @@
             foundFilm: Array,
             foundSeries: Array,
             sState: String,
-            sStateTv: String,
         },
         data() {
             return {
@@ -105,12 +150,6 @@
                 langFlag:'',
                 sourceFlag: 'https://upload.wikimedia.org/wikipedia/commons',
                 imgPath:'https://image.tmdb.org/t/p/w342',
-            // Conversione e calcolo punteggio
-                actualRating: '5',
-                convertedRating: '0',
-            // Stelle voto
-                starFull: 3,
-                starEmpty: 2,
             }
         },
         methods: {
@@ -137,39 +176,19 @@
                     flag = '/b/b4/Flag_of_Turkey.svg';
                 } else if (this.foundFilm[index].original_language == 'nl') {
                     flag = '/2/20/Flag_of_the_Netherlands.svg';
-                } else { 
+                } else if (this.foundFilm[index].original_language == 'pl') {
+                    flag = '/1/15/Flag_of_Poland_%28with_coat_of_arms%29.svg';
+                } else if (this.foundFilm[index].original_language == 'ca') {
+                    flag = '/c/cf/Flag_of_Canada.svg';
+                } else {
                     flag = '/0/03/Flag_Blank.svg';
                 }
                 return flag;
             },
         // Conversione punteggio
-            calcStar(index) {
-                this.actualRating = this.foundFilm[index].vote_average;
-                let vote = Math.ceil(this.actualRating / 2);
-                this.convertedRating = vote;
-                this.starCount(vote);
-                return vote;
+            calcStar(score) {
+                return Math.ceil(score / 2);
             },
-        // Assegnazione variabile quantità stelle 
-            starCount(vote) {
-                if (vote == 1) {
-                    this.starEmpty = 4;
-                    this.starFull = 1;
-                } else if (vote == 2) {
-                    this.starEmpty = 3;
-                    this.starFull = 2;
-                } else if (vote == 3) {
-                    this.starEmpty = 2;
-                    this.starFull = 3;
-                } else if (vote == 4) {
-                    this.starEmpty = 1;
-                    this.starFull = 4;
-                } else if (vote == 5) {
-                    this.starEmpty = 0;
-                    this.starFull = 5;
-                }
-            }
-            
         },
     }
 
@@ -177,9 +196,20 @@
 
 <style lang="scss">
 
+
+
+
     @import '../styles/vars.scss';
     @import '../styles/general.scss';
     @import '../styles/keyframes.scss';
+
+    .notFoundInfo {
+        padding: 1rem 0;
+        img {
+            width: 100%;
+            margin: 1rem 0;
+        }
+    }
 
     main {
         background-color: $secondary_color;
@@ -205,6 +235,10 @@
 
         #tv-card-container,
         #movie-card-container {
+            &:after {
+                    content: "";
+                    flex: center;
+                }
             width: 90%;
             height: 100%;
             margin: 1rem auto;
@@ -212,63 +246,92 @@
             justify-content: center;
             align-items: center;
             flex-wrap: wrap;
-            text-align: left;
+            text-align: center;
+            list-style-type: none;
 
-            .card {
-                color: $light_color;
-                text-shadow: 0px 0px 1px $secondary_color;
+            .card-cont {
                 width: calc(100% / 6);
                 height: 45vh;
-                list-style-type: none;
                 margin: 3px;
-                box-shadow: 0px 0px 6px -2px $primary_color;
-                border-radius: 5px;
-                overflow-y: auto;
-                padding: 1.5rem;
-                position: relative;
+                overflow-y: hidden;
+                scroll-behavior: smooth;
 
-                .poster {
-                    position: absolute;
-                    top: 0;
-                    bottom: 0;
-                    left: 0;
-                    right: 0;
-                    width: 100%;
+                &:hover .card {
+                    animation: flip-in 0.7s linear both;
+                    overflow-y: scroll;
                 }
-
-                .inf {
-                    color: $light_color;
-                    text-transform: capitalize;
-                    font-weight: bold;
-                    text-decoration-line: underline;
+                &:hover .notFoundInfo,
+                &:hover .poster {
+                    display: none;
                 }
-                .inf:not(.lang) {
+                &:hover .info {
+                    transition: all 0.7s linear 0.1s;
                     display: block;
                 }
 
-                p {
-                    padding-bottom: 0.8rem;
-                }
+                .card {
+                    color: $light_color;
+                    text-shadow: 0px 0px 1px $secondary_color;
+                    width: 100%;
+                    height: 100%;
+                    box-shadow: 0px 0px 6px -2px $primary_color;
+                    border-radius: 5px;
+                    overflow-y: hidden;
+                    padding: 1.5rem 1rem;
+                    display: block;
+                    animation: slit-in 0.45s ease-in-out both;
 
-                .flagL {
-                    width: 20px;
-                    height: 15px;
-                    margin: 0 1rem;
-                }
+                    .poster {
+                        position: absolute;
+                        top: 0;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        width: 100%;
+                    }
 
-                .rating {
-                    list-style: none;
+                    .inf {
+                        color: $light_color;
+                        text-transform: capitalize;
+                        font-weight: bold;
+                        text-decoration-line: underline;
+                        padding: 3px 0;
+                        font-style: italic;
+                        display: block;
+                    }
 
-                    i {
-                        display: inline-block;
-                        color: $stars_color;
-                        text-shadow: 2px 2px 4px $primary_color;
+                    p {
+                        padding: 0.8rem 0;
+                    }
+
+                    .flagL {
+                        width: 20px;
+                        height: 15px;
+                        margin: 0 1rem;
+                    }
+
+                    .rating {
+                        list-style: none;
+                        padding: 1rem 0;
+
+                        i {
+                            display: inline-block;
+                            color: $stars_color;
+                            text-shadow: 2px 2px 4px $primary_color;
+                        }
                     }
                 }
             }
         }
-
-
     }
 
 </style>
+
+<div>
+    <i v-for="star in 5" class="fa-star" :class="(star >= calcStar(response.vote_average)) ? 'fa-solid':'fa-regular'"  key="stars"></i>
+</div>
+
+
+getNumb(score) {
+    return Math.ceil(score / 2);
+}
