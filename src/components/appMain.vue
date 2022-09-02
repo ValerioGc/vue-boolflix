@@ -72,7 +72,6 @@
     import scoreCard from './card-components/scoreCard.vue';
     import resumeCard from './card-components/resumeCard.vue';
 
-
     export default {
         name: "appMain",
         components: {
@@ -107,7 +106,6 @@
         background-color: $secondary_color;
         min-height: 100vh;
         text-align: center;
-        padding-top: 6rem;
 
         .placeHl {
             font-size: 36px;

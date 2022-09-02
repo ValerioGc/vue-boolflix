@@ -5,9 +5,6 @@
             <span>
                 <input @change="$emit('getSearchQuery', userInput)" @keydown.enter=" $emit('getSearchQuery', userInput)" 
                     v-model="userInput" type="text" id="searchBar" placeholder="Cerca Film">
-                    <!-- <select name="genre" id="genre">
-                        <option v-for="(genre, index) in genreList" :key="index" value="?">{{genre.genre}}</option>
-                    </select> -->
             </span>
         </nav>
     </header>
@@ -15,13 +12,14 @@
 
 <script>
 
+
     export default {
         name:'appHeader',
         data() {
             return {
                 userInput: '',
             }
-        }
+        } 
     }
 
 </script>
@@ -35,9 +33,11 @@
             width: 100%;
             z-index: 90;
             position: fixed;
-            padding: 30px 0;
+            top: 0;
+            overflow: hidden;
+            padding: 20px 0;
             background-color: $primary_color;
-            box-shadow: 0px 0px 10px -3px $light_color;
+            box-shadow: 0px 0px 10px -3px $brand_color;
 
             nav {
                 width: 80%;
@@ -47,13 +47,21 @@
                 align-items: center;
 
                 h1 {
+                    font-size: 2.2rem;
                     color: $brand_color;
                     text-shadow: 2px 2px 3px $secondary_color;
                 }
+
                 input {
+                    font-weight: bold;
+                    color: $brand_color;
                     text-align: center;
-                    padding: 3px 30px;
+                    background-color: $secondary_color;
+                    filter: brightness(3);
+                    padding: 5px 80px;
                     border-radius: 5px;
+                    text-shadow: 0px 0px 1px $secondary_color;
+                    box-shadow: 0px 0px 6px 1px $brand_color;
                 }
             }
         }

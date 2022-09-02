@@ -70,6 +70,7 @@
         }
       },
 
+      // Feed Stato Richiesta
       checkStatus() {
         if (this.movieArray.length > 0 ) {
           this.reqState = 'loading complete';

@@ -1,9 +1,11 @@
+
 @import '~@fortawesome/fontawesome-free/css/all.css';
 
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    scroll-behavior: smooth;
 }
 
 // Scrollbar
@@ -24,30 +26,28 @@
     background-color: $brand_color;
 }
 
-// Corpo pagina
-
-html {
-    font-family: 'Bebas Neue', sans-serif;
+// Fonts
+@font-face {
+    font-family: 'Netflix Sans';
+    src: url("@/assets/fonts/NetflixSans-Regular.woff2");
 }
-
 h1,
 h2 {
     text-transform: uppercase;
     font-family: 'Bebas Neue', sans-serif;
 }
-
-
-
+html {
+    font-family: 'Neflix Sans', 'Bebas Neue';
+}
+// Corpo pagina
 .hidden {
     display: none;
 }
-
 .alert-not-found {
     color: $brand_color;
     text-shadow: 2px 2px 4px $primary_color;
     font-style: italic;
 }
-
 .inf {
     color: $light_color;
     text-transform: capitalize;
@@ -55,4 +55,10 @@ h2 {
     text-decoration-line: underline;
     padding: 3px 0;
     display: block;
+}
+
+::placeholder {
+    color: $brand_color;
+    text-shadow: 2px 2px 3px $primary_color;
+    opacity: 1;
 }
