@@ -82,7 +82,7 @@
   
   <br/> &nbsp;
   
-  <img align="center" src="/previews/boolflix-thumb.png" alt="Thumbnails vue-boolflix" />
+  <img align="center" src="/previews/boolflix-thumbs.png" alt="Thumbnails vue-boolflix" />
  <div>
    
 --------
@@ -93,9 +93,9 @@
   
   <br/>
 
-  <img src="/previews/vue-boolflix.png" alt="preview1" /> 
-  <img src="/previews/vue-boolflix2.png" alt="preview2" /> 
-  <img src="/previews/vue-boolflix3.png" alt="preview3" /> 
+  <img src="/previews/boolflix.png" alt="preview1" /> 
+  <img src="/previews/boolflix2.png" alt="preview2" /> 
+  <img src="/previews/boolflix3.png" alt="preview3" /> 
 </details>
 
 --------
