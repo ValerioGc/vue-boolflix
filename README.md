@@ -1,6 +1,6 @@
 # vue-boolflix
 
-> _Exercise about displaying movies from the IMDB's public API on user search with handling of errors_
+> _Replication of a web page that displays information about the user’s searched movies using the IMDB Public API_
 
 <br />
 
