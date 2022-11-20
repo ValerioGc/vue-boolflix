@@ -78,11 +78,11 @@
 ## *_Previews:_*
 
 <div align="center">
-  <img align="center" src="/previews/vue-boolflix.gif" alt="Gif vue-dischi" />
+  <img align="center" src="/previews/vue-boolflix.gif" alt="Gif vue-boolflix" />
   
   <br/> &nbsp;
   
-  <img align="center" src="/previews/boolflix-thumbs.png" alt="Thumbnails vue-dischi" />
+  <img align="center" src="/previews/boolflix-thumbs.png" alt="Thumbnails vue-boolflix" />
  <div>
    
 --------
