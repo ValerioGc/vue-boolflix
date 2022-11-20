@@ -82,7 +82,7 @@
   
   <br/> &nbsp;
   
-  <img align="center" src="/previews/boolflix-thumbs.png" alt="Thumbnails vue-boolflix" />
+  <img align="center" src="/previews/boolflix-thumb.png" alt="Thumbnails vue-boolflix" />
  <div>
    
 --------
